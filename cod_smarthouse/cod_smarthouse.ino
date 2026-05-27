@@ -27,6 +27,11 @@ void setup() {
 
   Serial.begin(115200);
 
+  Serial.println("================================");
+  Serial.println("SMART HOUSE SYSTEM STARTING...");
+  Serial.println("ESP32 INITIALIZATION...");
+  Serial.println("================================");
+
   pinMode(flamePin, INPUT);
   pinMode(gasPin, INPUT);
 
@@ -46,6 +51,10 @@ void setup() {
 
   Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
 
+  Serial.println("WIFI CONNECTED");
+  Serial.println("BLYNK READY");
+  Serial.println("SYSTEM READY");
+
   delay(2000);
 
   lcd.clear();
@@ -58,6 +67,15 @@ void loop() {
   int flame = digitalRead(flamePin);
   int gas = digitalRead(gasPin);
   int water = analogRead(waterPin);
+
+  Serial.print("Flame: ");
+  Serial.print(flame);
+
+  Serial.print(" | Gas: ");
+  Serial.print(gas);
+
+  Serial.print(" | Water: ");
+  Serial.println(water);
 
   bool danger = false;
 
@@ -76,6 +94,8 @@ void loop() {
     Blynk.virtualWrite(V0, "FIRE");
 
     if(!fireSent) {
+
+      Serial.println("FIRE DETECTED");
 
       Blynk.logEvent("fire_alert");
 
@@ -103,6 +123,8 @@ void loop() {
 
     if(!gasSent) {
 
+      Serial.println("GAS DETECTED");
+
       Blynk.logEvent("gas_alert");
 
       gasSent = true;
@@ -128,6 +150,8 @@ void loop() {
     Blynk.virtualWrite(V2, "WATER");
 
     if(!waterSent) {
+
+      Serial.println("WATER DETECTED");
 
       Blynk.logEvent("water_alert");
 
